@@ -7,7 +7,8 @@ const {
 	GraphQLObjectType,
 	GraphQLString,
 	GraphQLInt,
-	GraphQLSchema
+	GraphQLSchema,
+	GraphQLList
 
 } = graphql;
 
@@ -15,15 +16,39 @@ const {
 // 	{ id: '11', firstName: 'vipin', age: 28},
 // 	{ id: '12', firstName: 'ritika', age: 26}
 // ]
+// 
 
-// Define type of data a use has
+const CompanyType = new GraphQLObjectType({
+	name: 'company',
+	fields: ()=> ({
+		id: { type: GraphQLString },
+		name: { type: GraphQLString },
+		desc: { type:GraphQLString },
+		users: {
+			type: new GraphQLList(UserType),
+			resolve(parentValue, args) {
+				return axios.get(`http://localhost:3000/companies/${parentValue.id}/users`)
+					.then(resp => resp.data);
+			}
+		}
+	})
+})
+
+// Define type of data a user has
 const UserType = new GraphQLObjectType({
 	name: 'User',
-	fields: {
+	fields: ()=> ({
 		id: { type: GraphQLString },
 		firstName: { type: GraphQLString },
-		age: { type: GraphQLInt }
-	}
+		age: { type: GraphQLInt },
+		company: {
+			type: CompanyType,
+			resolve(parentValue, args) {
+				return axios.get(`http://localhost:3000/companies/${parentValue.companyId}`)
+					.then(resp => resp.data);
+			}
+		}
+	})
 })
 
 // const Mutation = new GraphQLObjectType({
@@ -55,6 +80,14 @@ const RootQuery = new GraphQLObjectType({
 				return axios.get(`http://localhost:3000/users/${args.id}`)
 				.then((resp) => resp.data)
 
+			}
+		},
+		company: {
+			type: CompanyType,
+			args: { id: { type: GraphQLString } },
+			resolve(parentValue, args) {
+				return axios.get(`http://localhost:3000/companies/${args.id}`)
+				.then((resp) => resp.data)
 			}
 		}
 	}
