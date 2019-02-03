@@ -1,6 +1,7 @@
 // Here we define schema, we tell how exactly our data looks like
 const graphql = require('graphql');
-const _ =  require('lodash')
+const _ =  require('lodash');
+const axios = require('axios');
 
 const {
 	GraphQLObjectType,
@@ -10,10 +11,10 @@ const {
 
 } = graphql;
 
-const users = [
-	{ id: '11', firstName: 'vipin', age: 28},
-	{ id: '12', firstName: 'ritika', age: 26}
-]
+// const users = [
+// 	{ id: '11', firstName: 'vipin', age: 28},
+// 	{ id: '12', firstName: 'ritika', age: 26}
+// ]
 
 // Define type of data a use has
 const UserType = new GraphQLObjectType({
@@ -51,7 +52,9 @@ const RootQuery = new GraphQLObjectType({
 			type: UserType,
 			args: { id: { type: GraphQLString } },
 			resolve:(parentValue, args) =>{
-				return _.find(users, {id: args.id})
+				return axios.get(`http://localhost:3000/users/${args.id}`)
+				.then((resp) => resp.data)
+
 			}
 		}
 	}
