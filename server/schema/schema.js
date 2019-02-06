@@ -8,7 +8,8 @@ const {
 	GraphQLString,
 	GraphQLInt,
 	GraphQLSchema,
-	GraphQLList
+	GraphQLList,
+	GraphQLNonNull
 
 } = graphql;
 
@@ -51,22 +52,47 @@ const UserType = new GraphQLObjectType({
 	})
 })
 
-// const Mutation = new GraphQLObjectType({
-// 	name: 'Mutation',
-// 	fields: {
-// 		addUsers: {
-// 			type: UserType,
-// 			args: {
-// 				id: { type: GraphQLString },
-// 				firstName: { type: GraphQLString },
-// 				age: { type: GraphQLInt }
-// 			},
-// 			resolve(parentValue, args) {
-// 				return users.push(args)
-// 			}
-// 		}
-// 	}
-// })
+const Mutation = new GraphQLObjectType({
+	name: 'Mutation',
+	fields: {
+		addUsers: {
+			type: UserType,
+			args: {
+				firstName: { type: GraphQLNonNull(GraphQLString) },
+				age: { type: GraphQLNonNull(GraphQLInt) },
+				companyId: { type: GraphQLString }
+			},
+			resolve(parentValue, { firstName, age }) {
+				return axios.post(`http://localhost:3000/users`, { firstName, age } )
+					.then(resp => resp.data);
+			}
+		},
+		deleteUser: {
+			type: UserType,
+			args: {
+				userId: { type: GraphQLNonNull(GraphQLString) }
+			},
+			resolve(parentValue, {userId}) {
+				return axios.delete(`http://localhost:3000/users/${userId}`)
+					.then(resp => resp.data);
+			}
+		},
+		updateUser: {
+			type: UserType,
+			args: {
+				id: { type: GraphQLNonNull(GraphQLString) },
+				firstName: { type: GraphQLString },
+				age: { type: GraphQLInt },
+				companyId: { type: GraphQLString }
+			},
+			resolve(parentValue, args) {
+				return axios.patch(`http://localhost:3000/users/${args.id}`, args)
+					.then(resp => resp.data);
+			}
+		}
+	}
+})
+
 
 // RootQuery is something that allow GraphQL to just to a graph of data,
 // eg. give me a user wiht id of 23
@@ -94,6 +120,7 @@ const RootQuery = new GraphQLObjectType({
 })
 
 module.exports = new GraphQLSchema({
-	query: RootQuery
+	query: RootQuery,
+	mutation:Mutation
 })
 

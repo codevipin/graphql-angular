@@ -1,1 +1,6 @@
-/node_modules
+server/node_modules
+graphql-angular/node_modules
+# compiled output
+graphql-angular/dist
+graphql-angular/tmp
+graphql-angular/out-tsc

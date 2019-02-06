@@ -1,0 +1,33 @@
+{
+  "users": [
+    {
+      "id": "12",
+      "firstName": "vooopppin",
+      "age": 26,
+      "companyId": "2"
+    },
+    {
+      "id": "13",
+      "firstName": "verma",
+      "age": 36,
+      "companyId": "2"
+    },
+    {
+      "firstName": "vipinn",
+      "age": 22,
+      "id": "uu6V7mx"
+    }
+  ],
+  "companies": [
+    {
+      "id": "1",
+      "name": "apple",
+      "description": "iPhone"
+    },
+    {
+      "id": "2",
+      "name": "google",
+      "description": "dont be evil"
+    }
+  ]
+}
