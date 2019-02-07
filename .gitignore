@@ -5,3 +5,4 @@ graphql-angular/dist
 graphql-angular/tmp
 graphql-angular/out-tsc
 .DS_Store
+server/db.json

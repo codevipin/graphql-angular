@@ -1,30 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { Subscription } from 'rxjs';
+
+import { fetchAllUser, fetchUser, addUser } from '../services/graphql.query';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GraphqlService {
-  usersQuery = gql`
-  {
-		company(id: "2") {
-			id
-			name
-			users {
-				firstName
-			}
-		}
-	}
-  `;
+  public querySubscription: Subscription;
   constructor( private apollo: Apollo) { }
 
-
   getUsers() {
-  	this.apollo.watchQuery({
-  		query: this.usersQuery
+  	return this.apollo.watchQuery({
+  		query: fetchAllUser
   	})
-  	.valueChanges.subscribe(result => console.log(result))
-  	// return "List of users";
+  }
+
+  addUser() {
+  	return this.apollo.mutate({
+  		mutation: addUser,
+  		refetchQueries: [{query:fetchAllUser}]
+  	})
   }
 }
