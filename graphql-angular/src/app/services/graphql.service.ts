@@ -18,10 +18,12 @@ export class GraphqlService {
   	})
   }
 
-  addUser() {
+  addUser({firstName, age}) {
+  	console.log(firstName);
   	return this.apollo.mutate({
   		mutation: addUser,
-  		refetchQueries: [{query:fetchAllUser}]
+  		refetchQueries: [{query:fetchAllUser}],
+  		variables: {firstName, age}
   	})
   }
 }

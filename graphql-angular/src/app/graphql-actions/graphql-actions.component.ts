@@ -27,9 +27,8 @@ export class GraphqlActionsComponent implements OnInit, OnDestroy {
   	)
   }
 
-  addUser() {
-  	console.log("add graphQL users")
-  	this.addUserSubs = this.graphQLService.addUser().subscribe(result => console.log(result))
+  addUser(userForm) {
+  	this.addUserSubs = this.graphQLService.addUser(userForm.value).subscribe(result => console.log(result))
 
   }
 

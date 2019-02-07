@@ -22,8 +22,8 @@ export const fetchUser = gql`
 `
 	
 export const addUser = gql`
-	mutation {
-		addUsers(firstName: "ritikais", age: 25) {
+	mutation addUser($firstName: String!, $age:Int!){
+		addUsers(firstName: $firstName, age: $age) {
 			id
 			firstName
 		}
