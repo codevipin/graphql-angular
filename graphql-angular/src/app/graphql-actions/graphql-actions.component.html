@@ -1,21 +1,6 @@
 <div class="container">
 	<div class="row">
-		<div class="col-xs-12">
-			<h1>Try out different GraphQL actions</h1>
-			<div class="row">
-			  <div class="col-sm-6" *ngFor="let user of data.users">
-			    <div class="card">
-			      <div class="card-body">
-			        <h5 class="card-title">Name: {{user.firstName}}</h5>
-					<ul class="list-group">
-						<li class="list-group-item">Id: {{ user.id }}</li>
-						<li class="list-group-item">Age: {{ user.age }}</li>
-					</ul>
-			        <a href="#" class="btn btn-primary mt-2">Show Detail</a>
-			      </div>
-			    </div>
-			  </div>
-			</div>
+		<div class="col-lg-4">
 			<form #userForm="ngForm" (ngSubmit)="addUser(userForm)">
 			  <div class="form-group">
 			    <label>Firstname</label>
@@ -37,16 +22,20 @@
 			    	required
 			    	ngModel>
 			  </div>
-			  <button type="submit" class="btn btn-primary">Submit</button>
+			  <button type="submit" class="btn btn-primary">Add New User</button>
 			</form>
-			<p class="lead mt-3">
-				<a
-					class="btn btn-primary btn-lg" 
-					role="button"
-					(click)="addUser()">
-					Add New User
-				</a>
-			</p>
 		</div>
+	  	<div class="col-lg-8">
+		    <div class="card" *ngFor="let user of data.users.reverse()">
+		      <div class="card-body">
+		        <h5 class="card-title">Name: {{user.firstName}}</h5>
+				<ul class="list-group">
+					<li class="list-group-item">Id: {{ user.id }}</li>
+					<li class="list-group-item">Age: {{ user.age }}</li>
+				</ul>
+		        <a href="#" class="btn btn-primary mt-2">Show Detail</a>
+		      </div>
+		    </div>
+	  </div>
 	</div>
 </div>
